@@ -1,0 +1,19 @@
+{
+	"Application":"Car Sales & Rental",
+	"build-version":"1.0.0",
+	"description":"Car Sales and rental Application",
+	"main":"app.py",
+	"dependencies":{
+		"framework":"flask",
+		"database":"mysql"
+	},
+	"Platform":[
+		"Windows",
+		"Linux",
+		"MacOs",
+		"Solaris",
+	],
+	"keywords":["car","sales","rental"],
+	"author":"Sammy Njenga aka Simmons",
+	"license":"MIT"
+}

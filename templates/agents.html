@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+        <title>Agents¦Dasboard</title>
+        <link rel="stylesheet" href="{{url_for('static',filename='fontawesome/css/font-awesome.css')}}">
+        <link rel="stylesheet" href="{{url_for('static',filename='fontawesome/css/font-awesome.min.css')}}">
+        <link rel="stylesheet" href="{{url_for('static',filename='css/home.css')}}">
+        <link rel="stylesheet" href="{{url_for('static',filename='css/replica.css')}}">
+        <script src="{{url_for('static',filename='js/gents.js')}}"></script>
+        <script src="{{url_for('static',filename='js/gentreplica.js')}}"></script>
+    </head>
+    <body>
+        <div class="menu menu-lhs" id="menu-dis">
+            <ul>
+                <li class="tabs" id="tab-link1" onclick="switchTab(event,'tab1')">Dashboard</li>
+                <li class="tabs" id="tab-link2" onclick="switchTab(event,'tab2')">Manage Stock</li>
+                <li class="tabs" id="tab-link3" onclick="switchTab(event,'tab3')">Settings</li>
+                <li class="tabs" id="tab-link4" onclick="switchTab(event,'tab4')">Preferences</li>
+                <li class="tabs" id="tab-link5" onclick="switchTab(event,'tab5')">Change Password</li>
+                <li class="tabs" id="tab-link6" onclick="switchTab(event,'tab6')">Privacy</li>
+            </ul>
+        </div>
+        <div class="container con">
+            <nav>
+                <div class="menu-con">
+                    <div class="bars"></div>
+                    <div class="bars"></div>
+                    <div class="bars"></div>
+                    <div class="bars"></div>
+                </div>
+                <input type="search" id="mySearch" placeholder="Type to search here..">
+                <ul>
+                    <li class="btn btn-sec"><a href="{{url_for('terminate')}}">SIGN OUT</a></li>
+                </ul>
+            </nav>
+            <div class="tab-content" id="tab1" data-tab="home">
+                <div class="cards">
+                    <div class="card">
+                        <h2>Sold</h2><br>
+                        <h2>{{orders[0]}}</h2>
+                        <i class="fa fa-rocket"></i>
+                    </div>
+                    <div class="card">
+                        <h2>Hired</h2><br>
+                        <h2>{{hired[0]}}</h2>
+                        <i class="fa fa-book"></i>
+                    </div>
+                    <div class="card">
+                        <h2>Orders</h2><br>
+                        <h2 id="order">{{orders[0]}}</h2>
+                        <i class="fa fa-book"></i>
+                    </div>
+                    <div class="card">
+                        <h2>Markets</h2>
+                        <h3>80%</h3>
+                    </div>
+                </div>
+                <div class="prog">
+                    <canvas id="barchart"></canvas>
+                    <div class="prop">
+                        <progress value="0" max="100"></progress>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-content" id="tab2" data-tab="data">
+                <div class="commands" id="">
+                    <ul>
+                        <li>Add</li>
+                        <li>Edit</li>
+                        <li>Delete</li>
+                    </ul>
+                    {%with messages=get_flashed_messages()%}
+                        {%for message in messages%}
+                            <div class="message">
+                                <h1 id="close">&times;</h1>
+                                <span id="msg">{{message}}</span>
+                            </div>
+                        {%endfor%}
+                    {%endwith%}
+                    {%if all_models%}
+                    <table>
+                        <thead>
+                            <td>P.ID</td>
+                            <td>Name</td>
+                            <td>Model</td>
+                            <td>Price</td>
+                            <td>View 2D</td>
+                            <td>Purpose</td>
+                            <td>Details</td>
+                        </thead>
+                        <tbody>
+                            {%for mod in all_models%}
+                            <tr>
+                                <td>{{mod[0]}}</td>
+                                <td>{{mod[1]}}</td>
+                                <td>{{mod[2]}}</td>
+                                <td>{{mod[3]}}</td>
+                                <td>
+                                    {%for imag in mod[4].split(",")%}
+                                        <img src="{{url_for('uploaded_file',filename=imag)}}">
+                                    {%endfor%}
+                                </td>
+                                
+                                {%if mod[5]==True%}
+                                    <td>Sale</td>
+                                {%else%}
+                                    <td>Rental</td>
+                                {%endif%}
+                                <td>{{mod[6]}}</td>
+                            </tr>
+                            {%endfor%}
+                        </tbody>
+                    </table>
+                    {%endif%}
+                    <div class="bid-img">
+                        <img src="">
+                        <p class="name"></p>
+                        <p class="price"></p>
+                    </div>
+                </div>           
+                <form method="POST" action="#" id="addfm" class="mymodal" enctype="multipart/form-data">
+                    <span id="close">&times;</span>
+                    <h2>ADD</h2>
+                    {{addform.hidden_tag()}}
+                    <div class="form-group" id="">
+                        {{addform.pmake.label(for="make")}}
+                        {{addform.pmake(id="make",class="form-control")}}
+                        {%for error in addform.pmake.errors%}
+                            <span>[{{error}}]</span>
+                        {%endfor%}
+                    </div>
+                    <div class="form-group" id="">
+                        {{addform.pmodel.label(for="model")}}
+                        {{addform.pmodel(id="model",class="form-control")}}
+                        {%for error in addform.pmodel.errors%}
+                            <span>[{{error}}]</span>
+                        {%endfor%}
+                    </div>
+                    <div class="form-group" id="">
+                        {{addform.price.label(for="price")}}
+                        {{addform.price(id="price",class="form-control")}}
+                        {%for error in addform.price.errors%}
+                            <span>[{{error}}]</span>
+                        {%endfor%}
+                    </div>
+                    <div class="form-group" id="">
+                        {{addform.upload_type.label(for="selection")}}
+                        {{addform.upload_type(id="selection",class="form-control")}}
+                        {%for error in addform.photo.errors%}
+                            <span>[{{error}}]</span>
+                        {%endfor%}
+                    </div>
+                    <div class="form-group" id="">
+                        {{addform.photo.label(for="photo")}}
+                        <!--input type="file" name="photo" accept="images/*"-->
+                        {{addform.photo(id="photo",class="form-control",multiple=(addform.upload_type=='Multiple'))}}
+                        {%for error in addform.photo.errors%}
+                            <span>[{{error}}]</span>
+                        {%endfor%}
+                    </div>
+                    <div class="form-group" id="">
+                        {{addform.pdesc.label(for="pdesc")}}
+                        {{addform.pdesc(id="pdesc",class="form-control")}}
+                        {%for error in addform.pdesc.errors%}
+                            <span>[{{error}}]</span>
+                        {%endfor%}
+                    </div>
+                    <div class="form-group" id="">
+                        {{addform.add(class="btn btn-prim",id="addbtn")}}
+                    </div>
+                </form>
+                <form method="POST" action="#" id="edtfm" class="mymodal" enctype="multipart/form-data">
+                    <span id="close">&times;</span>
+                    <h2>EDIT</h2>
+                    {{form.hidden_tag()}}
+                    <div class="form-group" id="">
+                        {{form.serno.label(for="serial")}}
+                        {{form.serno(id="serial",class="form-control")}}
+                        {%for error in form.serno.errors%}
+                            <span>[{{error}}]</span>
+                        {%endfor%}
+                    </div>
+                    <div class="form-group" id="">
+                        {{form.pmake.label(for="make")}}
+                        {{form.pmake(id="make",class="form-control")}}
+                        {%for error in form.pmake.errors%}
+                            <span>[{{error}}]</span>
+                        {%endfor%}
+                    </div>
+                    <div class="form-group" id="">
+                        {{form.pmodel.label(for="model")}}
+                        {{form.pmodel(id="model",class="form-control")}}
+                        {%for error in form.pmodel.errors%}
+                            <span>[{{error}}]</span>
+                        {%endfor%}
+                    </div>
+                    <div class="form-group" id="">
+                        {{form.price.label(for="price")}}
+                        {{form.price(id="price",class="form-control")}}
+                        {%for error in form.price.errors%}
+                            <span>[{{error}}]</span>
+                        {%endfor%}
+                    </div>
+                    <div class="form-group" id="">
+                        {{form.photo.label(for="photo")}}
+                        {{form.photo(id="photo",class="form-control")}}
+                        {%for error in form.photo.errors%}
+                            <span>[{{error}}]</span>
+                        {%endfor%}
+                    </div>
+                    <div class="form-group" id="">
+                        {{form.pdesc.label(for="pdesc")}}
+                        {{form.pdesc(id="pdesc",class="form-control")}}
+                        {%for error in form.pdesc.errors%}
+                            <span>[{{error}}]</span>
+                        {%endfor%}
+                    </div>
+                    <div class="form-group" id="">
+                        {{form.edit(class="btn btn-prim",id="edtbtn")}}
+                    </div>
+                </form>
+                <form method="POST" action="#" id="delfm" class="mymodal" enctype="multipart/form-data">
+                    <span id="close">&times;</span>
+                    <h2>DELETE</h2>
+                    {{delform.hidden_tag()}}
+                    <div class="form-group" id="">
+                        {{delform.serno.label(for="serial")}}
+                        {{delform.serno(id="serial",class="form-control")}}
+                        {%for error in delform.serno.errors%}
+                            <span>[{{error}}]</span>
+                        {%endfor%}
+                    </div>
+                    <div class="form-group" id="">
+                        {{delform.photo.label(for="photo")}}
+                        {{delform.photo(id="photo",class="form-control")}}
+                        {%for error in delform.photo.errors%}
+                            <span>[{{error}}]</span>
+                        {%endfor%}
+                    </div>
+                    <div class="form-group" id="">
+                        {{delform.delete(class="btn btn-prim",id="delbtn")}}
+                    </div>
+                </form>
+            </div>
+            <div class="tab-content" id="tab3" data-tab="settings">
+                <div class="cards">
+                    <div class="card">
+                        <h3>Fonts</h3>
+                        <h4>Choose font family</h4>
+                        <select name="fonts">
+                            <option value="calibri">Calibri</option>
+                            <option value="franklin">Franklin</option>
+                            <option value="new">New Times</option>
+                            <option value="sans">Sans Fransisco</option>
+                            <option value="tahoma">Tahoma</option>
+                            <option value="verdana">Verdana</option>
+                        </select>
+                        <h4>Choose font style</h4>
+                        <select name="style">
+                            <option value="bold">Bold</option>
+                            <option value="italic">Italic</option>
+                            <option value="bold-italic">Bold Italic</option>
+                            <option value="regular">Regular</option>
+                        </select>
+                        <h4>Choose font size</h4>
+                        <select name="size">
+                            <option value="12">12</option>
+                            <option value="14">14</option>
+                            <option value="16">16</option>
+                            <option value="18">18</option>
+                            <option value="20">20</option>
+                            <option value="22">22</option>
+                        </select>
+                        <h4>Choose font color</h4>
+                        <select name="color">
+                            <option value="blue">Blue</option>
+                            <option value="rebeccapurple">Rebecca Purple</option>
+                            <option value="purple">Purple</option>
+                            <option value="orangered">Orange</option>
+                            <option value="crimson">Diluted</option>
+                            <option value="black">regular</option>
+                        </select><br>
+                        <button class="btn btn-prim" id="bcom">Save Changes</button>
+                    </div>
+                    <div class="card">
+                        <h3>Themes</h3>
+                        <h4>Choose theme for backgroung</h4>
+                        <label>Change to dark</label>
+                        <input type="radio" name="theme" value="dark">Dark Mode
+                        <label>Bring the light</label>
+                        <input type="radio" name="theme" value="light">Light Mode
+                        <label>Back to default</label>
+                        <input type="radio" name="theme" value="system">System Default<br>
+                        <button class="btn btn-prim" id="btheme">Save Theme</button>
+                    </div>
+                    <div class="card"></div>
+                </div>
+            </div>
+            <div class="tab-content" id="tab4" data-tab="preferences">
+                <h2>Coming soon</h2>
+            </div>
+            <div class="tab-content" id="tab5" data-tab="auditor">
+                <h2>Change user</h2>
+                <button class="btn btn-sec">Update Password</button>
+                <form class='chngpw'>
+                    <span id="close">&times;</span>
+                    <h2>Change Password</h2>
+                    {{changeform.hidden_tag()}}
+                    <div class="form-group" id="">
+                        {{changeform.email.label(for="email")}}
+                        {{changeform.email(id="email",class="form-control",value=session['email'])}}
+                        {%for error in changeform.email.errors%}
+                            <span>[{{error}}]</span>
+                        {%endfor%}
+                    </div>
+                    <div class="form-group" id="">
+                        {{changeform.password.label(for="password")}}
+                        {{changeform.password(id="password",class="form-control")}}
+                        <i class="fa fa-eye"></i>
+                        {%for error in changeform.password.errors%}
+                            <span>[{{error}}]</span>
+                        {%endfor%}
+                    </div>
+                    <div class="form-group" id="">
+                        {{changeform.npassword.label(for="npassword")}}
+                        {{changeform.npassword(id="npassword",class="form-control")}}
+                        {%for error in changeform.npassword.errors%}
+                            <span>[{{error}}]</span>
+                        {%endfor%}
+                    </div>
+                    <div class="form-group" id="">
+                        {{changeform.vpassword.label(for="vpassword")}}
+                        {{changeform.vpassword(id="vpassword",class="form-control")}}
+                        {%for error in changeform.vpassword.errors%}
+                            <span>[{{error}}]</span>
+                        {%endfor%}
+                    </div>
+                    <div class="form-group" id="">
+                        {{changeform.submit(class="btn btn-prim",id="addbtn")}}
+                    </div>
+                </form>
+            </div>
+            <div class="tab-content" id="tab6" data-tab="privacy">
+                <h2>Private</h2>
+            </div>
+            <div class="special">
+                    <ul>
+                        <li><a href="#"><i class="fa fa-dashboard" onclick="switchTab(event,'tab1')"></i></a></li>
+                        <li><a href="#"><i class="fa fa-plus" onclick="switchTab(event,'tab2')"></i></a></li>
+                        <li><a href="#"><i class="fa fa-cog" onclick="switchTab(event,'tab3')"></i></a></li>
+                        <li><a href="#"><i class="fa fa-gears" onclick="switchTab(event,'tab4')"></i></a></li>
+                    </ul>
+                </div>
+         </div>
+    </body> 
+</html>

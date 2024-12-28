@@ -1,0 +1,9 @@
+bcrypt
+flask
+flask-mysqldb
+flask-sqlqlchemy
+flask-login
+flask-bcrypt
+dotenv
+flask-wtf
+flask-wtforms

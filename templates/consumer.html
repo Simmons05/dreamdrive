@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+        <title>MyApp¦Dasboard</title>
+        <link rel="stylesheet" href="{{url_for('static',filename='css/consumer.css')}}">
+        <link rel="stylesheet" href="{{url_for('static',filename='css/replica.css')}}">
+        <link rel="stylesheet" href="{{url_for('static',filename='fontawesome/css/font-awesome.css')}}">
+        <link rel="stylesheet" href="{{url_for('static',filename='fontawesome/css/font-awesome.min.css')}}">
+        <script src="{{url_for('static',filename='js/com.js')}}"></script>
+        <script src="{{url_for('static',filename='js/view.js')}}"></script>
+    </head>
+    <body>
+        <div class="menu menu-lhs" id="">
+            <ul>
+                <li class="tabs" id="tab-link1" onclick="switchTab(event,'tab1')">Dashboard</li>
+                <li class="tabs" id="tab-link2" onclick="switchTab(event,'tab2')">My Orders</li>
+                <li class="tabs" id="tab-link3" onclick="switchTab(event,'tab3')">Purchase</li>
+                <li class="tabs" id="tab-link4" onclick="switchTab(event,'tab4')">Invoices</li>
+                <li class="tabs" id="tab-link5" onclick="switchTab(event,'tab5')">Change Password</li>
+                <li class="tabs" id="tab-link6" onclick="switchTab(event,'tab6')">Settings</li>
+            </ul>
+        </div>
+        <div class="container con"> 
+            <nav>
+                <div class="menu-con">
+                    <div class="bars"></div>
+                    <div class="bars"></div>
+                    <div class="bars"></div>
+                    <div class="bars"></div>
+                </div>
+                <input type="search" placeholder="Type to search here..">
+                <h2>Welcome,{{session['username']}}</h2>
+                <ul>
+                    <li class="btn btn-sec"><a href="{{url_for('terminate')}}"><i class="fa fa-sign-out"></i></a></li>
+                </ul>
+            </nav>
+            <div class="tab-content" id="tab1" data-tab="home">
+                <div class="cards">
+                    <div class="card">
+                        <h2>Orders</h2>
+                        <h3>{{orders[0]}}</h3>
+                    </div>
+                    <div class="card">
+                        <h2>Hired</h2>
+                        <h3>{{hired[0]}}</h3>
+                    </div>
+                    <div class="card">
+                        <h2>Track</h2>
+                    </div>
+                    <div class="card">
+                        <h2>Services</h2>
+                    </div>
+                </div>
+                <div class="progress">
+                    <h2>Statistics</h2>
+                </div>
+                <canvas class="engine">
+                    
+                </canvas>
+
+            </div>
+            <div class="tab-content" id="tab2" data-tab="data">
+                <div class="commands" id="controls">
+                    <ul>
+                        <!--li>Add</li-->
+                        <!--li>Edit</li-->
+                        <li>Delete</li>
+                    </ul>
+                    <table>
+                        <thead>
+                            <td>S/No</td>
+                            <td>Name</td>
+                            <td>Model</td>
+                            <td>Price</td>
+                        </thead>
+                        <tbody>
+                            {%for user in users%}
+                            <tr>
+                                <td>{{user.id}}</td>
+                                <td>Gucci</td>
+                                <td>Shoes</td>
+                                <td>$100</td>
+                            </tr>
+                            {%endfor%}
+                        </tbody>
+                    </table> 
+                </div>           
+            </div>
+            <div class="tab-content" id="tab3" data-tab="recent">
+                {%if buckets%}
+                <div class="car-frame">
+                    <form method="POST" action="/update" class="mymod2">
+                        <h2>Hire Module</h2>
+                        {{renform.hidden_tag()}}
+                        {%with messages=get_flashed_messages()%}
+                            {%for message in messages%}
+                                <div class="message">
+                                    <span id="close">&times;</span>
+                                    <span id="msg">{{message}}</span>
+                                </div>
+                            {%endfor%}
+                        {%endwith%}
+                        <div class="form-group" id="">
+                            {{renform.pmake.label(for="make")}}
+                            {{renform.pmake(id="make",class="form-control")}}
+                            {%for error in renform.pmake.errors%}
+                                <span>[{{error}}]</span>
+                            {%endfor%}
+                        </div>
+                        <div class="form-group" id="">
+                            {{renform.pmodel.label(for="model")}}
+                            {{renform.pmodel(id="model",class="form-control")}}
+                            {%for error in renform.pmodel.errors%}
+                                <span>[{{error}}]</span>
+                            {%endfor%}
+                        </div>
+                        <div class="form-group" id="">
+                            {{renform.pimage.label(for="pic")}}
+                            {{renform.pimage(id="pic",class="form-control")}}
+                            {%for error in renform.pimage.errors%}
+                                <span>[{{error}}]</span>
+                            {%endfor%}
+                        </div>
+                        <div class="form-group" id="">
+                            {{renform.price.label(for="price")}}
+                            {{renform.price(id="price",class="form-control")}}
+                            {%for error in renform.price.errors%}
+                                <span>[{{error}}]</span>
+                            {%endfor%}
+                        </div>
+                        <div class="form-group" id="">
+                            {{renform.cstart.label(for="cstart")}}
+                            {{renform.cstart(id="cstart",class="form-control")}}
+                            {%for error in renform.cstart.errors%}
+                                <span>[{{error}}]</span>
+                            {%endfor%}
+                        </div>
+                        <div class="form-group" id="">
+                            {{renform.cstop.label(for="cstop")}}
+                            {{renform.cstop(id="cstop",class="form-control")}}
+                            {%for error in renform.cstop.errors%}
+                                <span>[{{error}}]</span>
+                            {%endfor%}
+                        </div>
+                        <div class="form-group" id="">
+                            {{renform.gtotal.label(for="gtotal")}}
+                            {{renform.gtotal(id="gtotal",class="form-control")}}
+                            {%for error in renform.gtotal.errors%}
+                                <span>[{{error}}]</span>
+                            {%endfor%}
+                        </div>
+                        <div class="form-group" id="">
+                            {{renform.submit(class="btn btn-prim")}}
+                            <span id="close">Exit</span>
+                        </div>
+                    </form>
+                    <form method="POST" action="/create" class="mymod1">
+                        <h2>ADD</h2>
+                        {{purform.hidden_tag()}}
+                        {%with messages=get_flashed_messages()%}
+                            {%for message in messages%}
+                                <div class="message">
+                                    <span id="close">&times;</span>
+                                    <span id="msg">{{message}}</span>
+                                </div>
+                            {%endfor%}
+                        {%endwith%}
+                        <div class="form-group" id="">
+                            {{purform.pmake.label(for="name")}}
+                            {{purform.pmake(id="name",class="form-control")}}
+                            {%for error in purform.pmake.errors%}
+                                <span>[{{error}}]</span>
+                            {%endfor%}
+                        </div>
+                        <div class="form-group" id="">
+                            {{purform.pmodel.label(for="category")}}
+                            {{purform.pmodel(id="category",class="form-control")}}
+                            {%for error in purform.pmodel.errors%}
+                                <span>[{{error}}]</span>
+                            {%endfor%}
+                        </div>
+                        <div class="form-group" id="">
+                            {{purform.price.label(for="price")}}
+                            {{purform.price(id="price",class="form-control")}}
+                            {%for error in purform.price.errors%}
+                                <span>[{{error}}]</span>
+                            {%endfor%}
+                        </div>
+                        <div class="form-group" id="">
+                            {{purform.pimage.label(for="pic")}}
+                            {{purform.pimage(id="pic",class="form-control")}}
+                            {%for error in purform.pimage.errors%}
+                                <span>[{{error}}]</span>
+                            {%endfor%}
+                        </div>
+                        <div class="form-group" id="">
+                            {{purform.submit(class="btn btn-prim")}}
+                            <span id="close">Exit</span>
+                        </div>
+                    </form>
+
+                    {%for car in buckets%}
+                        <div class="car-card">
+                            <!--div class="tool-tip">
+                                <span>click here to order</span>
+                            </div-->
+                            <img src="{{url_for('uploaded_file',filename=car[4])}}">
+                            <p class="make" data-item="make">{{car[1]}}</p>
+                            <p class="model" data-preta="model">{{car[2]}}</p>
+                            <p class="price" data-value="price">{{car[3]}}</p>
+                            {%if car[5]==True%}
+                                <p class="detail" data-purpose="sale">For Sale</p>
+                            {%else%}
+                                <p class="detail" data-purpose="hire">For Hire</p>
+                            {%endif%}
+                            <p class="status">{{car[6]}}</p>
+                        </div>
+                    {%endfor%}
+                </div>
+                {%endif%}
+            </div>
+            <div class="tab-content" id="tab4" data-tab="inventory">
+                <div class="progress">
+                    <h2></h2>
+                </div>
+            </div>
+            <div class="tab-content" id="tab5" data-tab="change-password">
+                <div class="pro">
+                    <button class="btn btn-sec">Update Password</h2>
+                </div>
+                <form class="pchng">
+                    <h2>Change Password</h2>
+                    {{changer.hidden_tag()}}
+                    <div class="form-group" id="">
+                        {{changer.email.label(for="email")}}
+                        {{changer.email(id="email",class="form-control",value=session['email'])}}
+                        {%for error in changer.email.errors%}
+                            <span>[{{error}}]</span>
+                        {%endfor%}
+                    </div>
+                    <div class="form-group" id="">
+                        {{changer.password.label(for="password")}}
+                        {{changer.password(id="password",class="form-control")}}
+                        {%for error in changer.password.errors%}
+                            <span>[{{error}}]</span>
+                        {%endfor%}
+                    </div>
+                    <div class="form-group" id="">
+                        {{changer.npassword.label(for="npassword")}}
+                        {{changer.npassword(id="npassword",class="form-control")}}
+                        {%for error in changer.npassword.errors%}
+                            <span>[{{error}}]</span>
+                        {%endfor%}
+                    </div>
+                    <div class="form-group" id="">
+                        {{changer.vpassword.label(for="vpassword")}}
+                        {{changer.vpassword(id="vpassword",class="form-control")}}
+                        {%for error in changer.vpassword.errors%}
+                            <span>[{{error}}]</span>
+                        {%endfor%}
+                    </div>
+                    <div class="form-group" id="">
+                        {{changer.submit(class="btn btn-prim",id="addbtn")}}
+                        <button id="close" class="btn">Close</button>
+                    </div>
+                </form>
+            </div>
+            <div class="tab-content" id="tab6" data-tab="Settings">
+                <div class="cards">
+                    <div class="card">
+                        <p>Transform your Looks</p>
+                        <div class="themebtn">
+                            <div>
+                                <h3>Light Theme</h3>
+                                <div id="switch">
+                                   <span id="gang" data-theme="light"></span> 
+                                </div>
+                            </div>
+                            <div>
+                                <h3>Dark Theme</h3>
+                                <div id="switch">
+                                   <span id="gang" data-theme="dark"></span> 
+                                </div>
+                            </div>
+                            <div>
+                                <h3>Use system</h3>
+                                <div id="switch">
+                                   <span id="gang" data-theme="system"></span> 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card"></div>
+                    <div class="card"></div>
+                </div>
+            </div>
+         </div>
+    </body> 
+</html>

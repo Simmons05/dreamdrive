@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content-type="width=device-width,initial-scale=1.0">
+		<title>{%block title%}Origin{%endblock%}</title>
+		<link rel="stylesheet" href="{{url_for('static',filename='css/reg.css')}}">
+	    <link rel="stylesheet" href="{{url_for('static',filename='css/replica.css')}}">
+	    <script src="{{url_for('static',filename='js/reg.js')}}"></script>
+	    <script src="{{url_for('static',filename='js/replica.js')}}"></script>
+	    {%block extralink%}
+	    	<link rel="stylesheet" href="{{url_for('static',filename='css/replican.css')}}">
+	    {%endblock%}
+	</head>>
+	<body>
+		<header>
+	        {%block navbar%}
+	        {%endblock%}
+    	</header>
+		<main>
+			{%block content%}
+			{%endblock%}
+		</main>
+		<footer>
+			{%block footer%}
+			{%endblock%}
+		</footer>
+	</body>
+</html>

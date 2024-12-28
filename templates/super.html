@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content-type="width=device-width,initial-scale=1.0">
+		<title>Super| Home</title>
+		<link rel="stylesheet" href="{{url_for('static',filename='css/supa.css')}}">
+	    <link rel="stylesheet" href="{{url_for('static',filename='css/replica.css')}}">
+	    <link rel="stylesheet" href="{{url_for('static',filename='fontawesome/css/font-awesome.css')}}">
+	    <link rel="stylesheet" href="{{url_for('static',filename='fontawesome/css/font-awesome.min.css')}}">
+	    <script src="{{url_for('static',filename='js/reg.js')}}"></script>
+	    <script src="{{url_for('static',filename='js/replican.js')}}"></script>
+	    <script src="{{url_for('static',filename='js/supa.js')}}"></script>
+	</head>
+	<body>
+		<header>
+	        <nav class="navb">
+	        	<ul>
+	        		{%if current_user%}
+	        			<li><a href="#"><i class="fa fa-dashboard"></i></a></li>
+	        			<li><a href="#"><i class="fa fa-user"></i></a></li>
+	        			<li><a href="#"><i class="fa fa-cog"></i></a></li>
+	        			<li><a href="{{url_for('terminate')}}"><i class="fa fa-sign-out"></i></a></li>
+	        		{%endif%}
+	        	</ul>
+	        </nav>
+    	</header>
+    	<div class="metar">
+        	<ul>
+        		<li id="tabs" data-target='pg1'>Dashboard</li>
+        		<li id="tabs" data-target='pg2'>Profile</li>
+        		<li id="tabs" data-target='pg3'>Setting</li>
+        		<li><a href="{{url_for('terminate')}}"> Logout</a></li>
+        	</ul>
+        </div>
+	    <div class="colp">
+    		<div class="menu-con" id="pta">
+    			<div class="bar"></div>
+    			<div class="bar"></div>
+    			<div class="bar"></div>
+    		</div>
+            <h2>Welcome,{{session['username']}}</h2>
+        </div>
+        <div class="container trailer" id="cont">
+        	<div class="tab-content" id="pg1">
+        		<div class="stairs">
+                    <label>Search by</label>
+                    <select name="category" class="myinp" selected=none>
+                        <option value="uname">username</option>
+                        <option value="email">email</option>
+                    </select>
+                    <i class="fa fa-search" id="fasearch"></i>
+                    <input type="search" name="search" class="myinput" placeholder="Search here..">
+        			<h4 class="tog-table">&#10009;</h4>
+        		</div>
+        		<table id="d-users">
+        			<thead>
+        				<td></td>
+        				<td>ID</td>
+        				<td>Username</td>
+        				<td>Email</td>
+        				<td>Role</td>
+        			</thead>
+        			<tbody>
+        				{%if users%}
+        					{%for user in users%}
+        						<tr id="imps">
+        							<td><input type="checkbox" name="" id="single"></td>
+        							<td>{{user[0]}}</td>
+		        					<td>{{user[1]}}</td>
+		        					<td>{{user[2]}}</td>
+                                    {%if user[5]==1%}
+                                        <td>Staff</td>
+                                    {%else%}
+                                        <td>User</td>
+                                    {%endif%}
+        						</tr>
+        					{%endfor%}
+        					<tr>
+        						<td><input type="checkbox" name="" id="all">select all</td>
+        						<td>with selected:</td>
+        						<td><a class="fa fa-pencil" href="#">Edit</a></td>
+        						<td><a class="fa fa-trash" href="#">Delete</a></td>
+        						<td><a class="fa fa-download" href="#">Export</a></td>
+        					</tr>
+        				{%endif%}
+        			</tbody>
+        		</table>
+                <table id="d-products">
+                    <thead>
+                        <td></td>
+                        <td>Prod ID</td>
+                        <td>View</td>
+                        <td>Make</td>
+                        <td>Model</td>
+                        <td>Price</td>
+                    </thead>
+                    <tbody>
+                        {%if carmodels%}
+                            {%for car in carmodels%}
+                                <tr id="imps">
+                                    <td><input type="checkbox" name="" id="single"></td>
+                                    <td>{{car[0]}}</td>
+                                    <td><img src="{{url_for('uploaded_file',filename=car[4])}}"></td>
+                                    <td>{{car[1]}}</td>
+                                    <td>{{car[2]}}</td>
+                                    <td>{{car[3]}}</td>
+                                </tr>
+                            {%endfor%}
+                            <tr>
+                                <td><input type="checkbox" name="" id="all">select all</td>
+                                <td>with selected:</td>
+                                <td><a class="fa fa-pencil" href="#">Edit</a></td>
+                                <td><a class="fa fa-trash" href="#">Delete</a></td>
+                                <td><a class="fa fa-download" href="#">Export</a></td>
+                            </tr>
+                        {%endif%}
+                    </tbody>
+                </table>
+        		<form action="#" method="POST">
+        			{{rolesform.hidden_tag()}}
+        			<h2>PROMOTER & DEMOTER</h2>
+                    <div class="form-group">
+                        {{rolesform.email.label}}
+                        {{rolesform.email(size=32)}}
+                        {%for error in rolesform.email.errors%}
+                            <span>[{{error}}]</span>
+                        {%endfor%}
+                    </div>
+        			<div class="form-group">
+                        {{rolesform.options.label}}
+                        {{rolesform.options()}}
+                        {%for error in rolesform.options.errors%}
+                            <span>[{{error}}]</span>
+                        {%endfor%}
+                    </div>
+                    <div class="form-group">
+                        {{rolesform.submit(class="btn alert")}}
+                        <button class="btn" id="closebtn">CLOSE</button>
+                    </div>	
+        		</form>
+        	{%with messages=get_flashed_messages()%}
+	        	{%for message in messages%}
+		            <div class="message">
+		                <span id="close">&times;</span>
+		                <span id="msg">{{message}}</span>
+		            </div>
+        		{%endfor%}
+        	{%endwith%}
+        	</div>
+        	<div class="tab-content" id="pg2">
+        		
+        	</div>
+        	<div class="tab-content" id="pg3">
+        		<div class="misc col-sm">
+        			<div class="pet">
+        				<h2>Change theme mode</h2>
+        				<span>Dark mode<i class="iris" data-target="dark"></i> </span>
+        				<span>System mode<i class="iris" data-target="system"></i></span>
+        				<span>Light mode<i  class="iris" data-target="light"></i></span>
+        			</div>
+        			<div class="pet"></div>
+        			<div class="pet"></div>
+        		</div>
+        	</div>
+        </div>
+	</body>
+</html>

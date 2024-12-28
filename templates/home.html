@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+        <title>Home¦Dasboard</title>
+        <link rel="stylesheet" href="{{url_for('static',filename='css/home.css')}}">
+        <link rel="stylesheet" href="{{url_for('static',filename='css/replica.css')}}">
+        <script src="{{url_for('static',filename='js/reg.js')}}"></script>
+        <script src="{{url_for('static',filename='js/replica.js')}}"></script>
+    </head>
+    <body>
+        <div class="menu menu-lhs" id="">
+            <ul>
+                <li class="tabs" id="tab-link1" onclick="switchTab(event,'tab1')">Dashboard</li>
+                <li class="tabs" id="tab-link2" onclick="switchTab(event,'tab2')">Manage Data</li>
+                <li class="tabs" id="tab-link3" onclick="switchTab(event,'tab3')">Settings</li>
+                <li class="tabs" id="tab-link4" onclick="switchTab(event,'tab4')">Privacy</li>
+            </ul>
+        </div>
+        <div class="container con"> 
+            <nav>
+                <div class="menu-con">
+                    <div class="bars"></div>
+                    <div class="bars"></div>
+                    <div class="bars"></div>
+                    <div class="bars"></div>
+                </div>
+                <input type="search" placeholder="Type to search here..">
+                <ul>
+                    <li class="btn btn-sec"><a href="{{url_for('terminate')}}">SIGN OUT</a></li>
+                </ul>
+            </nav>
+            <div class="tab-content" id="tab1" data-tab="home">
+                <div class="cards">
+                    <div class="card"></div>
+                    <div class="card"></div>
+                    <div class="card"></div>
+                    <div class="card"></div>
+                </div>
+                <div class="progress">
+                    <h2>Statistics</h2>
+                </div>
+            </div>
+            <div class="tab-content" id="tab2" data-tab="data">
+                <div class="commands" id="">
+                    <ul>
+                        <li>Add</li>
+                        <li>Edit</li>
+                        <li>Delete</li>
+                    </ul>
+                    <table>
+                        <thead>
+                            <td>P.ID</td>
+                            <td>P.Name</td>
+                            <td>P.Category</td>
+                            <td>P.Price</td>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Bow tie</td>
+                                <td>Clothing</td>
+                                <td>$100</td>
+                            </tr>
+                            {%for user in users%}
+                            <tr>
+                                <td>{{user.id}}</td>
+                                <td>Gucci</td>
+                                <td>Shoes</td>
+                                <td>$100</td>
+                            </tr>
+                            {%endfor%}
+                        </tbody>
+                    </table> 
+                </div>           
+                <form method="POST" action="/create" id="addfm" class="mymodal">
+                    <span id="close">&times;</span>
+                    <h2>ADD</h2>
+                    {{addform.hidden_tag()}}
+                    {%with messages=get_flashed_messages()%}
+                        {%for message in messages%}
+                            <div class="message">
+                                <span id="close">&times;</span>
+                                <span id="msg">{{message}}</span>
+                            </div>
+                        {%endfor%}
+                    {%endwith%}
+                    <div class="form-group" id="">
+                        {{addform.prodname.label(for="name")}}
+                        {{addform.prodname(id="name",class="form-control")}}
+                        {%for error in addform.prodname.errors%}
+                            <span>[{{error}}]</span>
+                        {%endfor%}
+                    </div>
+                    <div class="form-group" id="">
+                        {{addform.prodcategory.label(for="category")}}
+                        {{addform.prodcategory(id="category",class="form-control")}}
+                        {%for error in addform.prodcategory.errors%}
+                            <span>[{{error}}]</span>
+                        {%endfor%}
+                    </div>
+                    <div class="form-group" id="">
+                        {{addform.prodprice.label(for="price")}}
+                        {{addform.prodprice(id="price",class="form-control")}}
+                        {%for error in addform.prodprice.errors%}
+                            <span>[{{error}}]</span>
+                        {%endfor%}
+                    </div>
+                    <div class="form-group" id="">
+                        {{addform.submit(class="btn btn-prim")}}
+                    </div>
+                </form>
+                <form method="POST" action="/update" id="edtfm">
+                    <span id="close">&times;</span>
+                    <h2>EDIT</h2>
+                    {{editform.hidden_tag()}}
+                    {%with messages=get_flashed_messages()%}
+                        {%for message in messages%}
+                            <div class="message">
+                                <span id="close">&times;</span>
+                                <span id="msg">{{message}}</span>
+                            </div>
+                        {%endfor%}
+                    {%endwith%}
+                    <div class="form-group" id="">
+                        {{editform.prodid.label(for="name")}}
+                        {{editform.prodid(id="id",class="form-control")}}
+                        {%for error in editform.prodid.errors%}
+                            <span>[{{error}}]</span>
+                        {%endfor%}
+                    </div>
+                    <div class="form-group" id="">
+                        {{editform.prodname.label(for="name")}}
+                        {{editform.prodname(id="name",class="form-control")}}
+                        {%for error in editform.prodname.errors%}
+                            <span>[{{error}}]</span>
+                        {%endfor%}
+                    </div>
+                    <div class="form-group" id="">
+                        {{editform.prodcategory.label(for="category")}}
+                        {{editform.prodcategory(id="category",class="form-control")}}
+                        {%for error in editform.prodcategory.errors%}
+                            <span>[{{error}}]</span>
+                        {%endfor%}
+                    </div>
+                    <div class="form-group" id="">
+                        {{editform.prodprice.label(for="price")}}
+                        {{editform.prodprice(id="price",class="form-control")}}
+                        {%for error in editform.prodprice.errors%}
+                            <span>[{{error}}]</span>
+                        {%endfor%}
+                    </div>
+                    <div class="form-group" id="">
+                        {{editform.submit(class="btn btn-prim")}}
+                    </div>
+                </form>
+            </div>
+            <div class="tab-content" id="tab3" data-tab="settings">
+                <div class="cards">
+                    <div class="card"></div>
+                    <div class="card"></div>
+                    <div class="card"></div>
+                    <div class="card"></div>
+                </div>
+                <div class="progress">
+                    <h2>Statistics</h2>
+                </div>
+            </div>
+            <div class="tab-content" id="tab4" data-tab="privacy">
+                <div class="cards">
+                    <div class="card"></div>
+                    <div class="card"></div>
+                    <div class="card"></div>
+                    <div class="card"></div>
+                </div>
+                <div class="progress">
+                    <h2>Statistics</h2>
+                </div>
+            </div>
+         </div>
+    </body> 
+</html>

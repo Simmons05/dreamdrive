@@ -1,0 +1,35 @@
+{%extends 'app.html'%}
+{%block title%}Login| Account{%endblock%}
+
+{%block content%}
+<form action='/login' method="POST" enctype="form-data">
+    <h2>LOGIN</h2>
+    {{form.hidden_tag()}}
+    {%with messages=get_flashed_messages()%}
+        {%for message in messages%}
+            <div class="message">
+                <span id="close">&times;</span>
+                <span id="msg">{{message}}</span>
+            </div>
+        {%endfor%}
+    {%endwith%}
+    <div class="form-group">
+        {{form.email.label(for="email")}}
+        {{form.email(size=32,id="email",class="form-control")}}
+        {%for error in form.email.errors%}
+            <span>[{{error}}]</span>
+        {%endfor%}
+    </div>
+    <div class="form-group">
+        {{form.password.label(for="password")}}
+        {{form.password(size=32,id="password",class="form-control")}}
+        {%for error in form.password.errors%}
+            <span>[{{error}}]</span>
+        {%endfor%}
+    </div>
+    <div class="form-group">
+        {{form.submit(class="btn btn-sec")}}
+        <a href="{{url_for('signup')}}" class="btn btn-prim">Signup</a>
+    </div>
+</form>
+{%endblock%}

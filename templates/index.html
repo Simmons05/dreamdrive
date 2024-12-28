@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+        <title>Brooklyn</title>
+        <link rel="stylesheet" href="{{url_for('static',filename='css/replica.css')}}">
+        <link rel="stylesheet" href="{{url_for('static',filename='css/legend.css')}}">
+    </head>
+    <body>
+        <div class="container con">
+            <div class="header"> 
+                <a href="{{url_for('signup')}}">Register</a>
+                <a href="{{url_for('signin')}}">Login</a>
+            </div>
+            <div class="square">
+                <h1>
+                    Get your dream giant today with us. Over 400 models Dont miss a chance.<hr><br>
+                    Imagine we have best deals.<em> <b>Rental</b> Cars, Car <b>Loaning</b> available too</em>. Book with us. Get 20%<br> discount off for purchase of 2 cars.
+                </h1>
+            </div>
+            <div class="rhombus"></div>
+            <canvas id="balloon"></canvas>
+        </div>
+        <script src="{{url_for('static',filename='js/reg.js')}}"></script>
+        <script src="{{url_for('static',filename='js/index.js')}}"></script>
+    </body>
+</html>
